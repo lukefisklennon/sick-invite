@@ -1,0 +1,14 @@
+{
+  "name": "sick-invite",
+  "version": "1.0.0",
+  "description": "Secure your server with controlled, accountable invite links.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Luke Fisk-Lennon",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.3"
+  }
+}
