@@ -4,7 +4,7 @@
   "description": "Secure your server with controlled, accountable invite links.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "pm2 start index.js --watch"
   },
   "author": "Luke Fisk-Lennon",
   "license": "ISC",
