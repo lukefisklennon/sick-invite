@@ -99,6 +99,18 @@ const checkAdmin = (message) => {
 	return ok;
 }
 
+const getChannel = (guild, n) => (
+	guild.channels.cache.filter((channel) => (
+		channel.type === "text"
+	)).find((channel) => (
+		channel.position === n
+	))
+);
+
+const getWelcomeChannel = (guild) => (
+	guild.systemChannel ? guild.systemChannel : getChannel(guild, 0)
+);
+
 client.on("ready", () => {
 	console.log(`Connected as ${client.user.tag}`);
 });
@@ -148,7 +160,7 @@ client.on("messageReactionAdd", async (react, user) => {
 		return;
 	}
 
-	const invite = await react.message.channel.createInvite({
+	const invite = await getWelcomeChannel(react.message.guild).createInvite({
 		maxAge: inviteDuration,
 		maxUses: concurrentInvites,
 		unique: true,
@@ -169,17 +181,7 @@ client.on("guildMemberAdd", async (member) => {
 	const inviterId = updateInvites(await member.guild.fetchInvites());
 	const inviter = await client.users.fetch(inviterId);
 
-	let welcomeChannel = member.guild.systemChannel;
-
-	const topChannel = member.guild.channels.cache.filter((channel) => (
-		channel.type === "text"
-	)).find((channel) => (
-		channel.position === 0
-	));
-
-	if (!welcomeChannel) welcomeChannel = topChannel;
-
-	welcomeChannel.send(`Welcome ${member.toString()}! You have joined ${member.guild.name}${inviter ? ` by invitation from ${inviter.toString()}` : ""}. Get started by taking a look at ${topChannel.toString()}.`);
+	getWelcomeChannel(member.guild).send(`Welcome ${member.toString()}! ${inviter ? `You have joined ${member.guild.name} by invitation from ${inviter.toString()}. ` : ""}Get started by taking a look at ${getChannel(member.guild, 1).toString()}.`);
 });
 
 client.login(process.env.SICK_INVITE_TOKEN);
