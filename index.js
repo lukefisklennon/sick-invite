@@ -135,7 +135,10 @@ client.on("messageReactionAdd", async (react, user) => {
 
 	const alreadyInvited = isAdmin ? false : await deleteInvites(invites, user);
 
-	if (!alreadyInvited && Date.now() - getLastInvited(user) < inviteDelay) {
+	if (
+		!isAdmin && !alreadyInvited
+		&& Date.now() - getLastInvited(user) < inviteDelay
+	) {
 		const wait = Math.ceil(
 			(getLastInvited(user) + inviteDelay - Date.now()) / (1000 * 60)
 		);
