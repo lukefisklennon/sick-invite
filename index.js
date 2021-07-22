@@ -122,7 +122,7 @@ client.on("message", async (userMessage) => {
 
 	userMessage.delete();
 
-	const message = await userMessage.channel.send(`React ${inviteEmoji} to get a private, one-use invite. These expire after 48 hours, and you can invite up to one person per hour.`);
+	const message = await userMessage.channel.send(`React ${inviteEmoji} to get a one-use invite link. These expire after 48 hours, and you can invite one person at a time, once per hour.`);
 
 	message.react(inviteEmoji);
 });
