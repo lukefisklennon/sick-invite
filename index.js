@@ -135,10 +135,7 @@ client.on("messageReactionAdd", async (react, user) => {
 
 	const alreadyInvited = isAdmin ? false : await deleteInvites(invites, user);
 
-	if (
-		!isAdmin && !alreadyInvited
-		&& Date.now() - getLastInvited(user) < inviteDelay
-	) {
+	if (!alreadyInvited && Date.now() - getLastInvited(user) < inviteDelay) {
 		const wait = Math.ceil(
 			(getLastInvited(user) + inviteDelay - Date.now()) / (1000 * 60)
 		);
@@ -161,7 +158,7 @@ client.on("messageReactionAdd", async (react, user) => {
 	await user.send(invite.url);
 
 	if (alreadyInvited) {
-		user.send("Warning: your previous invite has been deleted");
+		user.send("⚠ Your previous invite has been deleted");
 	}
 });
 
