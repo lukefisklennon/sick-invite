@@ -8,7 +8,7 @@
     "prod": "pm2 start index.js"
   },
   "author": "Luke Fisk-Lennon",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^12.5.3"
   }

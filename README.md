@@ -8,7 +8,7 @@ What Sick Invite does is make it super easy for your users to get an invite link
 
 These invite links are shared privately with the user via DM. They're limited to one use, and expire after 48 hours. Users can only get one invite at a time, and are rate-limited to receiving one every 10 minutes.
 
-The bot also sends a welcome message which tags both the new user, and the user who invited them. This way, there is transparency regarding how invites are shared. 
+The bot also sends a welcome message which tags both the new user, and the user who invited them. This way, there is transparency regarding how invites are shared.
 
 ## Warning
 
@@ -36,3 +36,27 @@ You'll need Node.js and npm before installing the bot.
 If you're testing locally, run `npm start`.
 
 If you're in a production environment, use `npm run prod` to start the bot in background. This assumes that [PM2](https://www.npmjs.com/package/pm2) is globally installed. You can then use commands such as `pm2 ls` to manage the bot (see PM2's docs for more info).
+
+## License
+
+MIT License
+
+Copyright (c) 2021 Luke Fisk-Lennon
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
