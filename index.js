@@ -122,7 +122,7 @@ client.on("message", async (userMessage) => {
 
 	userMessage.delete();
 
-	const message = await userMessage.channel.send(`React ${inviteEmoji} to get a one-use invite link for your queer or questioning friends. These expire after 48 hours, and you can invite one person at a time, once every ${inviteDelay / (1000 * 60)} minutes.`);
+	const message = await userMessage.channel.send(`React ${inviteEmoji} to get a one-use invite link. These expire after 48 hours, and you can invite one person at a time, once every ${inviteDelay / (1000 * 60)} minutes.`);
 
 	message.react(inviteEmoji);
 });
