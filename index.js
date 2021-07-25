@@ -16,7 +16,7 @@ let lastInvited = {};
 const file = `${__dirname}/data.json`;
 const inviteEmoji = "💌";
 const inviteDuration = 60 * 60 * 24 * 2; // 2 days
-const inviteDelay = 1000 * 60 * 60; // 1 hour
+const inviteDelay = 1000 * 60 * 10; // 1 hour
 const concurrentInvites = 1;
 
 const writeFile = () => fs.writeFileSync(file, JSON.stringify(
@@ -122,7 +122,7 @@ client.on("message", async (userMessage) => {
 
 	userMessage.delete();
 
-	const message = await userMessage.channel.send(`React ${inviteEmoji} to get a one-use invite link. These expire after 48 hours, and you can invite one person at a time, once per hour.`);
+	const message = await userMessage.channel.send(`React ${inviteEmoji} to get a one-use invite link. These expire after 48 hours, and you can invite one person at a time, once per ${inviteDelay / (1000 * 60)} minutes.`);
 
 	message.react(inviteEmoji);
 });
