@@ -61,7 +61,7 @@ const updateInvites = (invites) => {
 const deleteInvites = async (invites, user) => {
 	const deletes = [];
 
-	invites.forEach(async (invite) => {
+	invites.forEach((invite) => {
 		if (inviters[invite.code] === user.id) {
 			deletes.push(invite.delete());
 			delete inviters[invite.code];
@@ -120,7 +120,7 @@ client.on("message", async (userMessage) => {
 		return;
 	}
 
-	userMessage.delete();
+	// userMessage.delete();
 
 	const message = await userMessage.channel.send(`React ${inviteEmoji} to get a one-use invite link. These expire after 48 hours, and you can invite one person at a time, once every ${inviteDelay / (1000 * 60)} minutes.`);
 
