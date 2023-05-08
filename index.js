@@ -89,16 +89,6 @@ const getIsAdmin = (member) => (
 	)
 );
 
-const checkAdmin = (message) => {
-	const ok = getIsAdmin(message.member);
-
-	if (!ok) {
-		message.reply("you must have the Administrator permission to run this command");
-	}
-
-	return ok;
-}
-
 const getChannel = (guild, n) => (
 	guild.channels.cache.filter((channel) => (
 		channel.type === "text"
@@ -116,7 +106,7 @@ client.on("ready", () => {
 });
 
 client.on("message", async (userMessage) => {
-	if (!userMessage.mentions.has(client.user) || !checkAdmin(userMessage)) {
+	if (!userMessage.mentions.has(client.user) || !getIsAdmin(userMessage)) {
 		return;
 	}
 
