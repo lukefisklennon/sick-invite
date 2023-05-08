@@ -181,7 +181,7 @@ client.on("guildMemberAdd", async (member) => {
 	const inviterId = updateInvites(await member.guild.fetchInvites());
 	const inviter = await client.users.fetch(inviterId);
 
-	getWelcomeChannel(member.guild).send(`Welcome ${member.toString()}! ${inviter ? `You have joined ${member.guild.name} by invitation from ${inviter.toString()}. ` : ""}Get started by taking a look at ${getChannel(member.guild, 1).toString()}.`);
+	getWelcomeChannel(member.guild).send(`Welcome ${member.toString()}! ${inviter ? `You have joined ${member.guild.name} by invitation from ${inviter.toString()}.` : ""}`);
 });
 
 client.login(process.env.SICK_INVITE_TOKEN);
