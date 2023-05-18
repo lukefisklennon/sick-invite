@@ -21,7 +21,7 @@ const writeFile = (guildId, data) => {
 }
 
 const readFile = (guildId) => {
-	if (fs.existsSync(file)) {
+	if (fs.existsSync(getFile(guildId))) {
 		return JSON.parse(fs.readFileSync(getFile(guildId)).toString());
 	} else {
 		const data = {
