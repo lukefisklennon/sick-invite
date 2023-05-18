@@ -106,7 +106,7 @@ client.on("ready", () => {
 });
 
 client.on("message", async (userMessage) => {
-	if (!userMessage.mentions.has(client.user) || !getIsAdmin(userMessage)) {
+	if (!userMessage.mentions.has(client.user) || !getIsAdmin(userMessage.member)) {
 		return;
 	}
 
