@@ -25,8 +25,8 @@ const readFile = (guildId) => {
 		return JSON.parse(fs.readFileSync(getFile(guildId)).toString());
 	} else {
 		const data = {
-			inviters: [],
-			lastInvited: []
+			inviters: {},
+			lastInvited: {}
 		};
 
 		writeFile(guildId, data);
