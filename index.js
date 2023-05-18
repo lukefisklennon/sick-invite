@@ -10,76 +10,78 @@ const client = new Discord.Client({
 	partials: ["MESSAGE", "CHANNEL", "REACTION"]
 });
 
-let inviters = {};
-let lastInvited = {};
-
-const file = `${__dirname}/data.json`;
+const getFile = (guildId) => `${__dirname}/data-${guildId}.json`;
 const inviteEmoji = "💌";
 const inviteDuration = 60 * 60 * 24 * 2; // 2 days
 const inviteDelay = 1000 * 60 * 10; // 1 hour
 const concurrentInvites = 1;
 
-const writeFile = () => fs.writeFileSync(file, JSON.stringify(
-	{
-		inviters,
-		lastInvited
+const writeFile = (guildId, data) => {
+	fs.writeFileSync(getFile(guildId), JSON.stringify(data));
+}
+
+const readFile = (guildId) => {
+	if (fs.existsSync(file)) {
+		return JSON.parse(fs.readFileSync(getFile(guildId)).toString());
+	} else {
+		const data = {
+			inviters: [],
+			lastInvited: []
+		};
+
+		writeFile(guildId, data);
+		return data;
 	}
-));
-
-if (fs.existsSync(file)) {
-	(
-		{
-			inviters,
-			lastInvited
-		} = JSON.parse(fs.readFileSync(file).toString())
-	);
-} else {
-	writeFile();
 }
 
-const addInvite = (invite, user) => {
-	inviters[invite.code] = user.id;
-
-	writeFile();
+const addInvite = (guildId, invite, user) => {
+	const data = readFile(guildId);
+	data.inviters[invite.code] = user.id;
+	writeFile(guildId, data);
 }
 
-const updateInvites = (invites) => {
+const updateInvites = (guildId, invites) => {
+	const data = readFile(guildId);
 	let inviter;
 
-	for (let code in inviters) {
+	for (let code in data.inviters) {
 		if (!invites.has(code)) {
-			inviter = inviters[code];
-			delete inviters[code];
+			inviter = data.inviters[code];
+			delete data.inviters[code];
 		}
 	}
 
-	writeFile();
+	writeFile(guildId, data);
 
 	return inviter;
 }
 
-const deleteInvites = async (invites, user) => {
+const deleteInvites = async (guildId, invites, user) => {
+	const data = readFile(guildId);
 	const deletes = [];
 
 	invites.forEach((invite) => {
-		if (inviters[invite.code] === user.id) {
+		if (data.inviters[invite.code] === user.id) {
 			deletes.push(invite.delete());
-			delete inviters[invite.code];
+			delete data.inviters[invite.code];
 		}
 	});
 
 	await Promise.all(deletes);
 
-	writeFile();
+	writeFile(guildId, data);
 
 	return deletes.length > 0;
 }
 
-const getLastInvited = (user) => lastInvited[user.id];
+const getLastInvited = (guildId, user) => (
+	readFile(guildId).lastInvited[user.id]
+)
 
-const setLastInvited = (user, time) => {
-	lastInvited[user.id] = time;
-	writeFile();
+const setLastInvited = (guildId, user, time) => {
+	const data = readFile(guildId);
+	data.lastInvited[user.id] = time;
+	writeFile(guildId, data);
 }
 
 const getIsAdmin = (member) => (
@@ -131,18 +133,19 @@ client.on("messageReactionAdd", async (react, user) => {
 
 	react.users.remove(user);
 
+	const guildId = guildId;
 	const isAdmin = getIsAdmin(react.message.guild.members.cache.get(user.id));
 	const invites = await react.message.guild.fetchInvites();
-	updateInvites(invites);
+	updateInvites(guildId, invites);
 
-	const alreadyInvited = isAdmin ? false : await deleteInvites(invites, user);
+	const alreadyInvited = isAdmin ? false : await deleteInvites(guildId, invites, user);
 
 	if (
 		!isAdmin && !alreadyInvited
-		&& Date.now() - getLastInvited(user) < inviteDelay
+		&& Date.now() - getLastInvited(guildId, user) < inviteDelay
 	) {
 		const wait = Math.ceil(
-			(getLastInvited(user) + inviteDelay - Date.now()) / (1000 * 60)
+			(getLastInvited(guildId, user) + inviteDelay - Date.now()) / (1000 * 60)
 		);
 
 		user.send(`Please wait another ${wait} minute${wait === 1 ? "" : "s"} before requesting another invite`);
@@ -157,8 +160,8 @@ client.on("messageReactionAdd", async (react, user) => {
 		reason: `requested by ${user.tag}`
 	});
 
-	addInvite(invite, user);
-	setLastInvited(user, Date.now());
+	addInvite(guildId, invite, user);
+	setLastInvited(guildId, user, Date.now());
 
 	await user.send(invite.url);
 
@@ -168,7 +171,7 @@ client.on("messageReactionAdd", async (react, user) => {
 });
 
 client.on("guildMemberAdd", async (member) => {
-	const inviterId = updateInvites(await member.guild.fetchInvites());
+	const inviterId = updateInvites(member.guild.id, await member.guild.fetchInvites());
 	const inviter = await client.users.fetch(inviterId);
 
 	getWelcomeChannel(member.guild).send(`Welcome ${member.toString()}! ${inviter ? `You have joined ${member.guild.name} by invitation from ${inviter.toString()}.` : ""}`);
