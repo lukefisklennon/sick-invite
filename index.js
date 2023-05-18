@@ -133,7 +133,7 @@ client.on("messageReactionAdd", async (react, user) => {
 
 	react.users.remove(user);
 
-	const guildId = guildId;
+	const guildId = react.message.guild.id;
 	const isAdmin = getIsAdmin(react.message.guild.members.cache.get(user.id));
 	const invites = await react.message.guild.fetchInvites();
 	updateInvites(guildId, invites);
