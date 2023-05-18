@@ -1,3 +1,5 @@
+# ⚠️ WARNING: currently broken, do not use
+
 # Sick Invite (Beta)
 
 Sick Invite is a Discord bot which can secure your private server with controlled, accountable invite links. Normally, a server owner may allow users to create their own invite links, or simply have a single public invite. A problem arises for servers where privacy is important, which is that you have no control over these links once they're shared. Worse, when new users join, you have no idea which invites were used or who shared them.
